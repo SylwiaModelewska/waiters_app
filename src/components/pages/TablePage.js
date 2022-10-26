@@ -51,6 +51,7 @@ export const TablePage = () => {
   const handleSubmit = () => {
     dispatch(editTableRequest({id, status, peopleAmount, maxPeopleAmount, bill}));
     navigate('/');
+    window.location.reload();
   }
 
   console.log(tableData);
