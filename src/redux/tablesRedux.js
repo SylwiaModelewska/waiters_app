@@ -31,7 +31,7 @@ export const editTableRequest = (editedTable) => {
       body: JSON.stringify(editedTable)
     };
 
-    fetch(`${API_URL}/table/${editedTable.id}`, options)
+    fetch(`${API_URL}/tables/${editedTable.id}`, options)
       .then(res => res.json())
       .then(() => dispatch(editTable(editedTable)));
   }
