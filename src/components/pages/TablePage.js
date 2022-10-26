@@ -2,8 +2,7 @@ import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { getTableById } from '../../redux/tablesRedux';
 import { getAllStatuses } from '../../redux/statusRedux';
-import { PrimaryButton } from '../common/PrimaryButton';
-import {Form, Row, Col } from 'react-bootstrap'
+import {Form, Row, Col, Button } from 'react-bootstrap'
 import { useState, useEffect } from 'react';
 import { editTableRequest } from '../../redux/tablesRedux';
 import { useNavigate } from 'react-router-dom';
@@ -105,7 +104,7 @@ export const TablePage = () => {
                 </div>
               </Col>
             </Row>}
-          <PrimaryButton text="Update"/>
+            <Button variant="primary" type="submit">Update</Button>
         </Form>
         }
     </div>
