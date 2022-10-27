@@ -1,4 +1,8 @@
 export const initialState = {
   tables: [ ],
-  statuses: [ ]
+  statuses: [ ],
+  tableData: {
+    "table": { },
+    "isError": false
+  }
 };

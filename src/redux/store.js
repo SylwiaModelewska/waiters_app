@@ -3,10 +3,12 @@ import thunk from 'redux-thunk';
 import { initialState } from './initialState';
 import tablesReducer from './tablesRedux';
 import statusesReducer from './statusRedux';
+import tableDataReducer from './tableDataRedux';
 
 const subreducers = {
   tables: tablesReducer,
   statuses: statusesReducer,
+  tableData: tableDataReducer,
 }
 
 const reducer = combineReducers(subreducers);

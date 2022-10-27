@@ -1,32 +1,44 @@
 import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { getTableById } from '../../redux/tablesRedux';
+import { getTableFromRequest } from '../../redux/tableDataRedux';
 import { getAllStatuses } from '../../redux/statusRedux';
 import {Form, Row, Col, Button } from 'react-bootstrap'
 import { useState, useEffect } from 'react';
 import { editTableRequest } from '../../redux/tablesRedux';
 import { useNavigate } from 'react-router-dom';
 import Spinner from 'react-bootstrap/Spinner';
+import { fetchTableRequest } from '../../redux/tableDataRedux';
 
 export const TablePage = () => {
-
-  const { id } = useParams();
-  const tableData = useSelector(state => getTableById(state, parseInt(id)));
-  const statuses = useSelector(getAllStatuses);
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
 
   const [status, setStatus] = useState('');
   const [peopleAmount, setPeopleAmount] = useState(0);
   const [maxPeopleAmount, setMaxPeopleAmount] = useState(0);
   const [bill, setBill] = useState(0);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isError, setIsError] = useState(false);
+
+  const { id } = useParams();
+  const dispatch = useDispatch();
+  useEffect(() => dispatch(fetchTableRequest(id)), [dispatch]);
+  const navigate = useNavigate();
+
+  const tableData = useSelector(getTableFromRequest);
+  const statuses = useSelector(getAllStatuses);
+
 
   useEffect(() => {
-    if(tableData){
-      setStatus(tableData.status);
-      setPeopleAmount(tableData.peopleAmount);
-      setMaxPeopleAmount(tableData.maxPeopleAmount);
-      setBill(tableData.bill);
+    setIsLoading(true);
+    if(tableData['table'].id){
+      setStatus(tableData['table'].status);
+      setPeopleAmount(tableData['table'].peopleAmount);
+      setMaxPeopleAmount(tableData['table'].maxPeopleAmount);
+      setBill(tableData['table'].bill);
+      setIsLoading(false);
+    }
+    else if(tableData['isError'] === true){
+      setIsLoading(false);
+      setIsError(true);
     }
   }, [tableData]);
 
@@ -54,17 +66,24 @@ export const TablePage = () => {
     window.location.reload();
   }
 
-  console.log(tableData);
+  //console.log(tableData);
   
+  if(isLoading){
+    return(
+      <Spinner animation="border" role="status">
+        <span className="visually-hidden">Loading...</span>
+      </Spinner>
+    );
+  }
+  if(isError){
+    navigate('/');
+    window.location.reload();
+  }
   return (
     <div>
-      {tableData === undefined && 
-        <Spinner animation="border" role="status">
-          <span className="visually-hidden">Loading...</span>
-        </Spinner>}
       {tableData &&
         <Form onSubmit={handleSubmit}>
-          <h1>Table {tableData && tableData.id}</h1>
+          <h1>Table {tableData && tableData['table'].id}</h1>
             <Row xs="auto" className="align-items-center m-2">
               <Col xs={2}>
                 <Form.Label>
