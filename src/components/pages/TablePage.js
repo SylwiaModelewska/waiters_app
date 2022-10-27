@@ -77,7 +77,6 @@ export const TablePage = () => {
   }
   if(isError){
     navigate('/');
-    window.location.reload();
   }
   return (
     <div>
